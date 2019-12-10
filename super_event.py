@@ -57,7 +57,7 @@ class SuperEvent(nn.Module):
         #print cls_wts.expand(inp[0].size()[0], -1, -1).size(), super_event.size()
         super_event = torch.bmm(cls_wts.expand(inp[0].size()[0], -1, -1), super_event)
         del cls_wts
-        print super_event.size()
+        print(super_event.size())
         # apply the super-event weights
         super_event = torch.sum(self.sup_mat * super_event, dim=2)
         #super_event = self.sup_mat(super_event.view(-1, 1024)).view(-1, self.classes)

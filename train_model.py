@@ -102,8 +102,8 @@ def run(models, criterion, num_epochs=50):
 
     best_loss = 10000
     for epoch in range(num_epochs):
-        print 'Epoch {}/{}'.format(epoch, num_epochs - 1)
-        print '-' * 10
+        print('Epoch {}/{}'.format(epoch, num_epochs - 1))
+        print('-' * 10)
 
         probs = []
         for model, gpu, dataloader, optimizer, sched, model_file in models:
@@ -180,7 +180,7 @@ def train_step(model, gpu, optimizer, dataloader):
         optimizer.step()
     epoch_loss = tot_loss / num_iter
     error = error / num_iter
-    print 'train-{} Loss: {:.4f} Acc: {:.4f}'.format(dataloader.root, epoch_loss, error)
+    print('train-{} Loss: {:.4f} Acc: {:.4f}'.format(dataloader.root, epoch_loss, error))
 
   
 
@@ -215,9 +215,9 @@ def val_step(model, gpu, dataloader):
         
     epoch_loss = tot_loss / num_iter
     error = error / num_iter
-    print 'val-map:', apm.value().mean()
+    print('val-map:', apm.value().mean())
     apm.reset()
-    print 'val-{} Loss: {:.4f} Acc: {:.4f}'.format(dataloader.root, epoch_loss, error)
+    print('val-{} Loss: {:.4f} Acc: {:.4f}'.format(dataloader.root, epoch_loss, error))
     
     return full_probs, epoch_loss
 
@@ -235,14 +235,14 @@ if __name__ == '__main__':
         criterion = nn.NLLLoss(reduce=False)
     
         lr = 0.1*batch_size/len(datasets['train'])
-        print lr
+        print(lr)
         optimizer = optim.Adam(model.parameters(), lr=lr)
         lr_sched = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=3, verbose=True)
         
         run([(model,0,dataloaders,optimizer, lr_sched, args.model_file)], criterion, num_epochs=40)
 
     else:
-        print 'Evaluating...'
+        print('Evaluating...')
         rgb_model = torch.load(args.rgb_model_file)
         rgb_model.cuda()
         dataloaders, datasets = load_data('', test_split, rgb_root)
@@ -267,6 +267,6 @@ if __name__ == '__main__':
                 o = (o[:o2.shape[0]]*.5+o2*.5)
                 p = (p[:p2.shape[0]]*.5+p2*.5)
             tapm.add(sigmoid(o), l)
-        print 'rgb MAP:', rapm.value().mean()
-        print 'flow MAP:', fapm.value().mean()
-        print 'two-stream MAP:', tapm.value().mean()
+        print('rgb MAP:', rapm.value().mean())
+        print('flow MAP:', fapm.value().mean())
+        print('two-stream MAP:', tapm.value().mean())
